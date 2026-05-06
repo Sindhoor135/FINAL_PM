@@ -229,6 +229,43 @@ Changes Made:
    - .payment-btn:active: Slight scale animation (0.98)
    Details: Comprehensive styling for payment section in parcel details modal
 
+   /* Payment Information */
+.payment-due {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.payment-paid {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.payment-status {
+  font-size: 12px;
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+.payment-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.payment-btn:active {
+  transform: scale(0.98);
+}
+
 Summary: Added 36 lines of CSS for payment UI elements
 
 
