@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>All Feedbacks</h2>
+  </div>
+
+  <div class="feedback-list">
+    <div class="feedback-card" *ngFor="let feedback of feedbacks">
+      <div class="feedback-header">
+        <div class="rating">
+          <span class="rating-stars">
+            <span *ngFor="let star of [1,2,3,4,5]" [class.filled]="star <= feedback.rating">★</span>
+          </span>
+          <span class="rating-number">{{ feedback.rating }}/5</span>
+        </div>
+        <div class="feedback-date">{{ feedback.createdAt | date: 'dd-MMM-yyyy HH:mm' }}</div>
+      </div>
+
+      <div class="feedback-content">
+        <div class="user-info">
+          <strong>{{ feedback.user?.fullName }}</strong> ({{ feedback.user?.email }})
+        </div>
+        <div class="parcel-info">
+          <span>Tracking: {{ feedback.parcel?.trackingNumber }}</span>
+          <span>Status: {{ feedback.parcel?.status }}</span>
+        </div>
+        <div class="comment">
+          "{{ feedback.comment }}"
+        </div>
+      </div>
+
+      <div class="parcel-details">
+        <div class="detail-row">
+          <label>Sender:</label>
+          <span>{{ feedback.parcel?.sender?.fullName }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Receiver:</label>
+          <span>{{ feedback.parcel?.receiverName }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Delivery Type:</label>
+          <span>{{ feedback.parcel?.deliveryType }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Cost:</label>
+          <span>₹ {{ feedback.parcel?.cost | number: '1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

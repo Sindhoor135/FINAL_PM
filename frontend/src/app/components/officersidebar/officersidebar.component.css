@@ -1,0 +1,35 @@
+.sidebar {
+  width: 240px;
+  background: linear-gradient(#1e3a5f, #0f2744);
+  color: #fff;
+  padding: 20px;
+  height: 92vh;
+}
+
+.sidebar h3 {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px;
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 6px;
+ 
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background: #274c77;
+  color: #fff;
+}
+.logo {
+    margin-bottom: 30px;
+    
+}
+
+.logo img {
+    width: 60px;
+    border-radius: 12px;
+}

@@ -1,0 +1,82 @@
+<body>
+
+<div class="auth-card">
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="PMS Logo">
+    </div>
+
+    <h2>Create Account</h2>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="message success-message">
+        {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="message error-message">
+        {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" novalidate>
+        <div class="input-group">
+            <input type="text" placeholder="Full Name" formControlName="fullName" [class.invalid]="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.touched || submitted)">
+              <div *ngIf="registerForm.get('fullName')?.errors?.['required']">Full name is required.</div>
+              <div *ngIf="registerForm.get('fullName')?.errors?.['pattern']">Name should contain only alphabets and spaces.</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="email" placeholder="Email Address" formControlName="email" [class.invalid]="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || submitted)">
+              <div *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</div>
+              <div *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="password" placeholder="Password" formControlName="passwordHash" [class.invalid]="registerForm.get('passwordHash')?.invalid && (registerForm.get('passwordHash')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('passwordHash')?.invalid && (registerForm.get('passwordHash')?.touched || submitted)">
+              <div *ngIf="registerForm.get('passwordHash')?.errors?.['required']">Password is required.</div>
+              <div *ngIf="registerForm.get('passwordHash')?.errors?.['minlength']">Password must be at least 8 characters.</div>
+              <div *ngIf="registerForm.get('passwordHash')?.errors?.['weakPassword']">Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="password" placeholder="Confirm Password" formControlName="confirmPassword" [class.invalid]="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.touched || submitted)">
+              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirm password is required.</div>
+              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Passwords do not match.</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="tel" placeholder="Mobile Number" formControlName="mobile" [class.invalid]="registerForm.get('mobile')?.invalid && (registerForm.get('mobile')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('mobile')?.invalid && (registerForm.get('mobile')?.touched || submitted)">
+              <div *ngIf="registerForm.get('mobile')?.errors?.['required']">Mobile number is required.</div>
+              <div *ngIf="registerForm.get('mobile')?.errors?.['pattern']">Mobile number must be exactly 10 digits.</div>
+              <div *ngIf="registerForm.get('mobile')?.errors?.['dummyMobile']">Mobile number cannot have all repeated digits.</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" placeholder="Address" formControlName="address" [class.invalid]="registerForm.get('address')?.invalid && (registerForm.get('address')?.touched || submitted)">
+            <div class="error" *ngIf="registerForm.get('address')?.invalid && (registerForm.get('address')?.touched || submitted)">
+              <div *ngIf="registerForm.get('address')?.errors?.['required']">Address is required.</div>
+            </div>
+        </div>
+
+        <button type="submit" class="auth-btn" [disabled]="isLoading">
+            {{ isLoading ? 'REGISTERING...' : 'REGISTER' }}
+        </button>
+    </form>
+
+    <button type="button" class="reset-btn" (click)="onReset()">Reset</button>
+
+    <div class="auth-footer">
+        Already have your account? <a routerLink="/login">Log In</a>
+    </div>
+</div>
+
+</body>

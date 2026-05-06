@@ -1,0 +1,85 @@
+<body>
+    <div class="container" id="paymentForm">
+        <h2>Card Payment</h2>
+
+        <div class="amount">
+                Total Amount Due: ₹<span id="amount">{{ paymentAmount }}</span>
+        </div>
+
+        <div *ngIf="paymentAmount <= 0" class="error" style="padding: 12px; margin-bottom: 20px; background-color: #ffebee; border-left: 4px solid #f44336; border-radius: 4px;">
+            No payment required. The due amount is zero.
+        </div>
+
+        <form [formGroup]="paymentForm" (ngSubmit)="processPayment()" novalidate>
+            <label>Card Number</label>
+            <input type="text" formControlName="cardNumber" maxlength="16" [disabled]="paymentAmount <= 0" [class.invalid]="paymentForm.get('cardNumber')?.invalid && (paymentForm.get('cardNumber')?.touched || submitted)">
+            <div class="error" *ngIf="paymentForm.get('cardNumber')?.invalid && (paymentForm.get('cardNumber')?.touched || submitted)">
+              <div *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Card number is required.</div>
+              <div *ngIf="paymentForm.get('cardNumber')?.errors?.['pattern']">Card number must be exactly 16 digits.</div>
+              <div *ngIf="paymentForm.get('cardNumber')?.errors?.['dummyCard']">Card number cannot be a dummy number (all same digits).</div>
+            </div>
+
+            <label>Expiry Date (MM/YY)</label>
+            <input type="text" formControlName="expiryDate" placeholder="MM/YY" maxlength="5" [disabled]="paymentAmount <= 0" [class.invalid]="paymentForm.get('expiryDate')?.invalid && (paymentForm.get('expiryDate')?.touched || submitted)">
+            <div class="error" *ngIf="paymentForm.get('expiryDate')?.invalid && (paymentForm.get('expiryDate')?.touched || submitted)">
+              <div *ngIf="paymentForm.get('expiryDate')?.errors?.['required']">Expiry date is required.</div>
+              <div *ngIf="paymentForm.get('expiryDate')?.errors?.['pattern']">Expiry date must be in MM/YY format.</div>
+              <div *ngIf="paymentForm.get('expiryDate')?.errors?.['pastExpiry']">Expiry date must be in the future.</div>
+            </div>
+
+            <label>CVV</label>
+            <input type="password" formControlName="cvv" maxlength="4" [disabled]="paymentAmount <= 0" [class.invalid]="paymentForm.get('cvv')?.invalid && (paymentForm.get('cvv')?.touched || submitted)">
+            <div class="error" *ngIf="paymentForm.get('cvv')?.invalid && (paymentForm.get('cvv')?.touched || submitted)">
+              <div *ngIf="paymentForm.get('cvv')?.errors?.['required']">CVV is required.</div>
+              <div *ngIf="paymentForm.get('cvv')?.errors?.['pattern']">CVV must be exactly 3 digits.</div>
+            </div>
+
+            <label>Cardholder Name</label>
+            <input type="text" formControlName="cardHolderName" [disabled]="paymentAmount <= 0" [class.invalid]="paymentForm.get('cardHolderName')?.invalid && (paymentForm.get('cardHolderName')?.touched || submitted)">
+            <div class="error" *ngIf="paymentForm.get('cardHolderName')?.invalid && (paymentForm.get('cardHolderName')?.touched || submitted)">
+              <div *ngIf="paymentForm.get('cardHolderName')?.errors?.['required']">Cardholder name is required.</div>
+              <div *ngIf="paymentForm.get('cardHolderName')?.errors?.['pattern']">Name should contain only alphabets and spaces.</div>
+            </div>
+
+            <button type="submit" [disabled]="paymentAmount <= 0">Pay Now</button>
+        </form>
+    </div>
+
+</body>
+
+<!-- Invoice Modal -->
+<div class="invoice-overlay" *ngIf="invoiceVisible">
+    <div class="invoice-modal">
+        <div class="invoice-header">
+            <h2>Invoice</h2>
+            <button class="close" (click)="closeInvoice()">×</button>
+        </div>
+
+        <div class="invoice-body">
+            <p><strong>Payment ID:</strong> {{ invoiceData?.id }}</p>
+            <p><strong>Paid At:</strong> {{ invoiceData?.paidAt }}</p>
+            <p><strong>Method:</strong> {{ invoiceData?.paymentMethod }}</p>
+            <p><strong>Amount:</strong> ₹{{ invoiceData?.amount }}</p>
+
+            <h3>Parcel</h3>
+            <p><strong>Tracking:</strong> {{ invoiceData?.parcel?.trackingNumber }}</p>
+            <p><strong>Receiver:</strong> {{ invoiceData?.parcel?.receiverName }} — {{ invoiceData?.parcel?.receiverMobile }}</p>
+            <p><strong>Weight:</strong> {{ invoiceData?.parcel?.weight }}</p>
+            <p><strong>Delivery Type:</strong> {{ invoiceData?.parcel?.deliveryType }}</p>
+            <p><strong>Packing Type:</strong> {{ invoiceData?.parcel?.packingType }}</p>
+
+            <h3>Sender</h3>
+            <p><strong>Name:</strong> {{ invoiceData?.parcel?.sender?.fullName }}</p>
+            <p><strong>Email:</strong> {{ invoiceData?.parcel?.sender?.email }}</p>
+            <p><strong>Mobile:</strong> {{ invoiceData?.parcel?.sender?.mobile }}</p>
+            <p><strong>Address:</strong> {{ invoiceData?.parcel?.sender?.address }}</p>
+        </div>
+
+        <div class="invoice-actions">
+            <button (click)="printInvoice()">Print / Save as PDF</button>
+            <button class="secondary" (click)="closeInvoice()">Close</button>
+        </div>
+    </div>
+</div>
+
+

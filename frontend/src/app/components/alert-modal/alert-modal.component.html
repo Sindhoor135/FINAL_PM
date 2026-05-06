@@ -1,0 +1,20 @@
+<div *ngIf="currentAlert" class="alert-overlay">
+  <div class="alert-modal" [ngClass]="'alert-' + currentAlert.type">
+    <div class="alert-header">
+      <h2>{{ currentAlert.title || (currentAlert.type === 'success' ? 'Success' : currentAlert.type === 'error' ? 'Error' : currentAlert.type === 'warning' ? 'Warning' : 'Information') }}</h2>
+      <button class="close-btn" (click)="closeAlert()">×</button>
+    </div>
+    <div class="alert-body">
+      <div class="alert-icon">
+        <span *ngIf="currentAlert.type === 'success'" class="icon">✓</span>
+        <span *ngIf="currentAlert.type === 'error'" class="icon">✕</span>
+        <span *ngIf="currentAlert.type === 'warning'" class="icon">!</span>
+        <span *ngIf="currentAlert.type === 'info'" class="icon">ℹ</span>
+      </div>
+      <p>{{ currentAlert.message }}</p>
+    </div>
+    <div class="alert-footer">
+      <button (click)="closeAlert()" class="btn-close">Close</button>
+    </div>
+  </div>
+</div>

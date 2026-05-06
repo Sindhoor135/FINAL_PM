@@ -1,0 +1,20 @@
+<div class="layout">
+  <app-officersidebar></app-officersidebar>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <h2>Officer Panel</h2>
+      </div>
+      <div class="conrtols">
+        <img class="profile-pic" src="assets/dp.png" alt="PMS Logo" />
+        <span>{{userName}}</span>
+        <button class="logout-btn" (click)="handleLogout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

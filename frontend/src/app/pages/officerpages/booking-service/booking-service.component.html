@@ -1,0 +1,139 @@
+<div class="page">
+  <h1 class="page-title">Book a New Parcel</h1>
+
+
+  <div class="layout">
+    <!-- LEFT FORM -->
+    <div class="card form-card">
+      <h2>Customer Information</h2>
+
+
+      <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" novalidate>
+        <div *ngIf="submitted && bookingForm.invalid" class="global-error">Please fix the errors below before booking.</div>
+        <div class="form-grid">
+          <label for="receiverName">Receiver Name:</label>
+          <input type="text" id="receiverName" formControlName="receiverName" [class.invalid]="bookingForm.get('receiverName')?.invalid && (bookingForm.get('receiverName')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('receiverName')?.invalid && (bookingForm.get('receiverName')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('receiverName')?.errors?.['required']">Receiver name is required.</div>
+            <div *ngIf="bookingForm.get('receiverName')?.errors?.['pattern']">Name should contain only alphabets and spaces.</div>
+          </div>
+
+          <label for="receiverName">Sender Name:</label>
+          <input type="text" id="senderName" formControlName="senderName" [class.invalid]="bookingForm.get('receiverName')?.invalid && (bookingForm.get('receiverName')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('receiverName')?.invalid && (bookingForm.get('receiverName')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('receiverName')?.errors?.['required']">Sender name is required.</div>
+            <div *ngIf="bookingForm.get('receiverName')?.errors?.['pattern']">Name should contain only alphabets and spaces.</div>
+          </div>
+
+          <label for="receiverAddress">Receiver Address:</label>
+          <input type="text" id="deliveryAddress" formControlName="deliveryAddress" [class.invalid]="bookingForm.get('deliveryAddress')?.invalid && (bookingForm.get('deliveryAddress')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('deliveryAddress')?.invalid && (bookingForm.get('deliveryAddress')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('deliveryAddress')?.errors?.['required']">Delivery address is required.</div>
+          </div>
+
+          <label for="receiverPin">Receiver Pin:</label>
+          <input type="text" id="receiverPin" formControlName="receiverPin" [class.invalid]="bookingForm.get('receiverPin')?.invalid && (bookingForm.get('receiverPin')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('receiverPin')?.invalid && (bookingForm.get('receiverPin')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('receiverPin')?.errors?.['required']">PIN is required.</div>
+            <div *ngIf="bookingForm.get('receiverPin')?.errors?.['pattern']">PIN must be exactly 6 digits.</div>
+          </div>
+
+          <label for="receiverMobile">Receiver Mobile:</label>
+          <input type="text" id="receiverMobile" formControlName="receiverMobile" [class.invalid]="bookingForm.get('receiverMobile')?.invalid && (bookingForm.get('receiverMobile')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('receiverMobile')?.invalid && (bookingForm.get('receiverMobile')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('receiverMobile')?.errors?.['required']">Mobile number is required.</div>
+            <div *ngIf="bookingForm.get('receiverMobile')?.errors?.['pattern']">Enter a valid 10-digit mobile number.</div>
+            <div *ngIf="bookingForm.get('receiverMobile')?.errors?.['repeatedDigits']">Mobile number cannot have all repeated digits.</div>
+          </div>
+
+          <label for="parcelWeight">Parcel Weight (grams):</label>
+          <input type="number" id="parcelWeight" formControlName="parcelWeight" [class.invalid]="bookingForm.get('parcelWeight')?.invalid && (bookingForm.get('parcelWeight')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('parcelWeight')?.invalid && (bookingForm.get('parcelWeight')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('parcelWeight')?.errors?.['required']">Parcel weight is required.</div>
+            <div *ngIf="bookingForm.get('parcelWeight')?.errors?.['min']">Weight must be greater than 0.</div>
+          </div>
+
+          <label for="parcelContents">Parcel Contents Description:</label>
+          <input type="text" id="parcelContents" formControlName="parcelContents" [class.invalid]="bookingForm.get('parcelContents')?.invalid && (bookingForm.get('parcelContents')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('parcelContents')?.invalid && (bookingForm.get('parcelContents')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('parcelContents')?.errors?.['required']">Please describe parcel contents.</div>
+          </div>
+
+          <label for="deliveryType">Parcel Delivery Type:</label>
+          <select id="deliveryType" formControlName="deliveryType" [class.invalid]="bookingForm.get('deliveryType')?.invalid && (bookingForm.get('deliveryType')?.touched || submitted)">
+            <option value="standard">Standard Delivery</option>
+            <option value="express">Express Delivery</option>
+            <option value="same-day">Same-Day Delivery</option>
+          </select>
+          <div class="error" *ngIf="bookingForm.get('deliveryType')?.invalid && (bookingForm.get('deliveryType')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('deliveryType')?.errors?.['required']">Select a delivery type.</div>
+          </div>
+
+          <label for="packingPreference">Parcel Packing Preference:</label>
+          <select id="packingPreference" formControlName="packingPreference" [class.invalid]="bookingForm.get('packingPreference')?.invalid && (bookingForm.get('packingPreference')?.touched || submitted)">
+            <option value="basic">Basic Packing</option>
+            <option value="premium">Premium Packing</option>
+          </select>
+          <div class="error" *ngIf="bookingForm.get('packingPreference')?.invalid && (bookingForm.get('packingPreference')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('packingPreference')?.errors?.['required']">Select a packing preference.</div>
+          </div>
+
+          <label for="pickupTime">Parcel Pickup Time:</label>
+          <input type="date" id="pickupTime" formControlName="pickupTime" [attr.min]="getTodayDateString()" [disabled]="isSameDayMode" [class.invalid]="bookingForm.get('pickupTime')?.invalid && (bookingForm.get('pickupTime')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('pickupTime')?.invalid && (bookingForm.get('pickupTime')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('pickupTime')?.errors?.['required']">Pickup time is required.</div>
+            <div *ngIf="bookingForm.get('pickupTime')?.errors?.['pastDate']">Pickup time must be today or in the future.</div>
+          </div>
+
+          <label for="dropoffTime">Parcel Dropoff Time:</label>
+          <input type="date" id="dropTime" formControlName="dropTime" [attr.min]="bookingForm.get('pickupTime')?.value" [disabled]="isSameDayMode" [class.invalid]="bookingForm.get('dropTime')?.invalid && (bookingForm.get('dropTime')?.touched || submitted)">
+          <div class="error" *ngIf="bookingForm.get('dropTime')?.invalid && (bookingForm.get('dropTime')?.touched || submitted)">
+            <div *ngIf="bookingForm.get('dropTime')?.errors?.['required']">Dropoff time is required.</div>
+            <div *ngIf="bookingForm.get('dropTime')?.errors?.['pastDate']">Dropoff time must be today or in the future.</div>
+            <div *ngIf="bookingForm.get('dropTime')?.errors?.['dropBeforePickup']">Dropoff time must be after the pickup date.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="primary">Book Parcel</button>
+          <button type="reset" class="secondary" (click)="submitted=false; bookingForm.reset()">Clear</button>
+        </div>
+      </form>
+    </div>
+
+
+    <!-- RIGHT SIDE - PRICE SUMMARY -->
+    <div class="side">
+      <div class="card">
+        <h2>Price Summary</h2>
+
+
+        <div class="summary-row">
+          <span>Base Rate</span>
+          <span>₹{{ 50 }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Weight Charge</span>
+          <span>₹{{ (bookingForm.get('parcelWeight')?.value * 0.02) || 0 }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery Charge</span>
+          <span>₹{{ getDeliveryCharge(bookingForm.get('deliveryType')?.value) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Packing Charge</span>
+          <span>₹{{ getPackingCharge(bookingForm.get('packingPreference')?.value) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Tax (5%)</span>
+          <span>₹{{ ((50 + ((bookingForm.get('parcelWeight')?.value * 0.02) || 0) + getDeliveryCharge(bookingForm.get('deliveryType')?.value) + getPackingCharge(bookingForm.get('packingPreference')?.value)) * 0.05) }}</span>
+        </div>
+        <hr>
+        <div class="summary-row total">
+          <span>Total Service Cost</span>
+          <span>₹{{ serviceCost }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

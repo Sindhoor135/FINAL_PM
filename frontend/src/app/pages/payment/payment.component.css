@@ -1,0 +1,125 @@
+.container {
+    width: 420px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+}
+
+.amount {
+    background: #e8f0fe;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    color: #1a73e8;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input.invalid {
+    border-color: red;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1558b0;
+}
+
+.cancel {
+    background: #aaa;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none;
+}
+
+.success-title {
+    color: green;
+}
+
+.receipt {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.links a {
+    margin: 0 8px;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+/* Invoice modal styles */
+.invoice-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.invoice-modal {
+    background: #fff;
+    width: 90%;
+    max-width: 760px;
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.invoice-header { display:flex; justify-content:space-between; align-items:center; }
+.invoice-header h2 { margin:0 }
+.invoice-header .close { background:transparent; border:none; font-size:22px; cursor:pointer }
+.invoice-body { margin-top:12px; max-height:60vh; overflow:auto }
+.invoice-body p { margin:6px 0 }
+.invoice-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px }
+.invoice-actions button { padding:8px 12px }
+.invoice-actions .secondary { background:#f0f0f0; color:#111 }
+
+@media print {
+    .invoice-overlay, .invoice-modal { position: static; box-shadow: none; background: #fff }
+    .invoice-actions, .close { display:none }
+}

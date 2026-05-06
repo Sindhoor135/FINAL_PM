@@ -1,0 +1,121 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(#eef3f7, #478ecc);
+    margin: 0;
+}
+
+.navbar {
+    width: 90%;
+    margin:  auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+
+
+.logo img {
+    height: 40px;
+    margin: 0;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #334155;
+    font-weight: 500;
+}
+
+.login-btn {
+    background: #1e3a5f;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* Hero */
+.hero {
+    width: 90%;
+    margin: auto;
+    padding: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.hero-text h1 {
+    font-size: 40px;
+    color: #1e293b;
+}
+
+.hero-text p {
+    margin: 20px 0;
+    color: #475569;
+    max-width: 450px;
+}
+
+.cta-btn {
+    background: #1e3a5f;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.hero-image img {
+    width: 420px;
+}
+
+/* Features */
+.features {
+    background: #fff;
+    width: 90%;
+    margin: auto;
+    padding: 50px;
+    border-radius: 16px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    text-align: center;
+}
+
+/* Testimonials */
+.testimonials {
+    width: 90%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+}
+
+.testimonial-card {
+    margin-bottom: 30px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user img {
+    width: 40px;
+    border-radius: 50%;
+}

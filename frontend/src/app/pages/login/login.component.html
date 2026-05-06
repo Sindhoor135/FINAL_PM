@@ -1,0 +1,60 @@
+<body>
+
+<div class="auth-card">
+    <div class="logo">
+        <img src="assets/logo.jpg" alt="PMS Logo">
+    </div>
+
+    <h2>Login</h2>
+
+    <div *ngIf="errorMessage" class="error-alert">
+        {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" *ngIf="loginForm">
+        
+        <div class="input-group">
+            <input 
+                type="email" 
+                formControlName="email"
+                placeholder="Email"
+                [class.is-invalid]="submitted && email?.invalid"
+            >
+            <div class="error-message" *ngIf="submitted && email?.invalid">
+                <span *ngIf="email?.errors?.['required']">Email is required</span>
+                <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input 
+                type="password" 
+                formControlName="password"
+                placeholder="Password"
+                [class.is-invalid]="submitted && password?.invalid"
+            >
+            <div class="error-message" *ngIf="submitted && password?.invalid">
+                <span *ngIf="password?.errors?.['required']">Password is required</span>
+                <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </div>
+        </div>
+
+        <button type="submit" class="auth-btn" [disabled]="isLoading">
+            {{ isLoading ? 'Logging in...' : 'LOG IN' }}
+        </button>
+    </form>
+
+    <div class="auth-footer" >
+        Don't have an account? <a routerLink="/register">Register</a>
+    </div>
+
+</div>
+
+</body>
+
+
+
+
+
+
+
