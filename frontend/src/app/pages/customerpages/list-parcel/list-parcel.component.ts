@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { ParcelService } from "../../../services/parcel.service";
+import { PaymentService } from "../../../services/payment.service";
 import { FeedbackService } from "../../../services/feedback.service";
 import { AlertService } from "../../../services/alert.service";
 import { DialogService } from "../../../services/dialog.service";
@@ -26,6 +28,7 @@ export class ListParcelComponent implements OnInit {
   feedbackRating: number = 0;
   feedbackComment: string = '';
   showEditModal: boolean = false;
+  paymentStatusMap: Map<number, any> = new Map();
 
   // Edit modal state
   editFormData: any = {
@@ -42,9 +45,11 @@ export class ListParcelComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private parcelService: ParcelService,
+    private paymentService: PaymentService,
     private feedbackService: FeedbackService,
     private alertService: AlertService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {
     const authResponse = localStorage.getItem('authResponse');
     if (authResponse) {
@@ -66,6 +71,24 @@ export class ListParcelComponent implements OnInit {
         next: (response: any) => {
           this.parcels = response;
           console.log(this.parcels);
+          // Fetch payment status for each parcel
+          this.parcels.forEach(parcel => {
+            if (parcel.id) {
+              const parcelId = typeof parcel.id === 'string' ? parseInt(parcel.id, 10) : (parcel.id as number);
+              this.paymentService.getPaymentStatus(parcelId)
+                .subscribe({
+                  next: (paymentStatus: any) => {
+                    this.paymentStatusMap.set(parcelId, paymentStatus);
+                    parcel.paymentDue = paymentStatus.paymentDue;
+                  },
+                  error: (error) => {
+                    console.error('Error fetching payment status:', error);
+                    // Default to cost if payment status fetch fails
+                    parcel.paymentDue = parcel.cost;
+                  }
+                });
+            }
+          });
         },
         error: (error) => {
           console.error('Error fetching parcels:', error);
@@ -256,6 +279,29 @@ export class ListParcelComponent implements OnInit {
           console.error('Error updating parcel details:', error);
         }
       });
+  }
+
+  /**
+   * Make payment for a parcel
+   */
+  makePayment(parcel: Parcel) {
+    if (!parcel.id) {
+      this.alertService.showError('Invalid parcel ID', 'Error');
+      return;
+    }
+
+    // Close the modal
+    this.closeModal();
+    
+    // Navigate to payment page with parcel ID and booking data
+    this.router.navigate(['/payment', parcel.id], {
+      state: {
+        bookingData: {
+          cost: parcel.cost,
+          parcelId: parcel.id
+        }
+      }
+    });
   }
 
 }

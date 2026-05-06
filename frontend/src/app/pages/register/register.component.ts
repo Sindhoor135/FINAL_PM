@@ -26,6 +26,8 @@ export class RegisterComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
   submitted = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -115,6 +117,15 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onReset(): void {
     this.registerForm.reset();
     this.submitted = false;

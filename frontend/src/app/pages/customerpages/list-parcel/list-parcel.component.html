@@ -126,6 +126,25 @@
           <span class="cost">₹ {{ selectedParcel.cost | number: '1.2-2' }}</span>
         </div>
       </div>
+
+      <!-- Payment Information -->
+      <div class="detail-section">
+        <h3>Payment Information</h3>
+        <div class="detail-row">
+          <label>Total Amount:</label>
+          <span class="cost">₹ {{ selectedParcel.cost | number: '1.2-2' }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Payment Due:</label>
+          <span [ngClass]="selectedParcel.paymentDue && selectedParcel.paymentDue > 0 ? 'payment-due' : 'payment-paid'">
+            ₹ {{ selectedParcel.paymentDue | number: '1.2-2' }}
+            <span class="payment-status">{{ selectedParcel.paymentDue && selectedParcel.paymentDue > 0 ? '(Pending)' : '(Paid)' }}</span>
+          </span>
+        </div>
+        <div *ngIf="selectedParcel.paymentDue && selectedParcel.paymentDue > 0" class="detail-row">
+          <button class="payment-btn" (click)="makePayment(selectedParcel)">Make Payment</button>
+        </div>
+      </div>
     </div>
 
     <div class="modal-footer">

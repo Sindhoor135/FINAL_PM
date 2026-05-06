@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../../services/payment.service';
 import { AlertService } from '../../services/alert.service';
@@ -19,6 +19,8 @@ export class PaymentComponent implements OnInit {
   paymentAmount: number = 0;
   paymentForm!: FormGroup;
   submitted: boolean = false;
+  paymentCompleted: boolean = false;  // Track if payment is completed
+  isLoading: boolean = true;  // Track loading state
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,10 +61,17 @@ export class PaymentComponent implements OnInit {
     // Get booking ID from route parameters
     this.activatedRoute.params.subscribe(params => {
       this.bookingId = params['bookingId'];
+      
+      // Try to get payment amount from navigation state first
+      this.paymentAmount = (Math.floor((history.state?.bookingData?.cost || 0)*100))/100.0;
+      
+      // If no amount in navigation state and we have a booking ID, fetch from backend
+      if (this.paymentAmount === 0 && this.bookingId) {
+        this.fetchPaymentAmount();
+      } else {
+        this.isLoading = false;
+      }
     });
-
-    // Get payment amount from navigation state
-    this.paymentAmount = (Math.floor((history.state?.bookingData?.cost || 0)*100))/100.0;
 
     // Initialize form
     this.paymentForm = this.fb.group({
@@ -71,6 +80,32 @@ export class PaymentComponent implements OnInit {
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
       cardHolderName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
     });
+  }
+
+  /**
+   * Fetch payment amount from backend using parcel ID
+   */
+  fetchPaymentAmount(): void {
+    const parcelId = parseInt(this.bookingId, 10);
+    this.paymentService.getPaymentStatus(parcelId)
+      .subscribe({
+        next: (response: any) => {
+          // Check if parcel status is PENDING, only then show payment due
+          if (response.status === 'PENDING' || response.paymentStatus === 'PENDING') {
+            this.paymentAmount = response.paymentDue || response.cost || 0;
+          } else {
+            // If status is not PENDING, no payment is needed
+            this.paymentAmount = 0;
+            this.alertService.showInfo(`Payment not required. Parcel status: ${response.status}`, 'No Payment Due');
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching payment amount:', error);
+          this.alertService.showWarning('Could not fetch payment amount. Please try again.', 'Warning');
+          this.isLoading = false;
+        }
+      });
   }
 
   /**
@@ -102,9 +137,15 @@ export class PaymentComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('Payment successful', response);
+          this.paymentCompleted = true;  // Mark payment as completed
           // Show invoice modal with response data
           this.invoiceData = response;
           this.invoiceVisible = true;
+          // Auto-close invoice and redirect after 3 seconds
+          setTimeout(() => {
+            this.invoiceVisible = false;
+            this.router.navigate(['/customer/list-parcel']);
+          }, 11000);
         },
         error: (error) => {
           console.error('Payment failed', error);
@@ -119,6 +160,31 @@ export class PaymentComponent implements OnInit {
   closeInvoice(): void {
     this.invoiceVisible = false;
     this.invoiceData = null;
+    this.paymentCompleted = true;  // Mark payment as completed
+    // Redirect to parcels list immediately when user closes invoice
+    this.router.navigate(['/customer/list-parcel']);
+  }
+
+  /**
+   * Warn user if trying to navigate away with pending payment
+   */
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    if (!this.paymentCompleted && this.bookingId && this.paymentAmount > 0) {
+      // Show warning if user tries to leave without completing payment
+      const confirmMessage = 'You have a pending payment. Are you sure you want to leave?';
+      $event.returnValue = confirmMessage;
+    }
+  }
+
+  /**
+   * Also handle route navigation
+   */
+  canDeactivate(): boolean {
+    if (!this.paymentCompleted && this.bookingId && this.paymentAmount > 0) {
+      return confirm('You have a pending payment. Are you sure you want to leave? The payment will remain as PENDING.');
+    }
+    return true;
   }
 
   /**

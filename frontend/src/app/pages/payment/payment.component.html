@@ -2,15 +2,19 @@
     <div class="container" id="paymentForm">
         <h2>Card Payment</h2>
 
-        <div class="amount">
+        <div *ngIf="isLoading" class="loading" style="padding: 12px; margin-bottom: 20px; background-color: #e3f2fd; border-left: 4px solid #2196F3; border-radius: 4px;">
+            Loading payment details...
+        </div>
+
+        <div class="amount" *ngIf="!isLoading">
                 Total Amount Due: ₹<span id="amount">{{ paymentAmount }}</span>
         </div>
 
-        <div *ngIf="paymentAmount <= 0" class="error" style="padding: 12px; margin-bottom: 20px; background-color: #ffebee; border-left: 4px solid #f44336; border-radius: 4px;">
+        <div *ngIf="!isLoading && paymentAmount <= 0" class="error" style="padding: 12px; margin-bottom: 20px; background-color: #ffebee; border-left: 4px solid #f44336; border-radius: 4px;">
             No payment required. The due amount is zero.
         </div>
 
-        <form [formGroup]="paymentForm" (ngSubmit)="processPayment()" novalidate>
+        <form [formGroup]="paymentForm" (ngSubmit)="processPayment()" novalidate *ngIf="!isLoading">
             <label>Card Number</label>
             <input type="text" formControlName="cardNumber" maxlength="16" [disabled]="paymentAmount <= 0" [class.invalid]="paymentForm.get('cardNumber')?.invalid && (paymentForm.get('cardNumber')?.touched || submitted)">
             <div class="error" *ngIf="paymentForm.get('cardNumber')?.invalid && (paymentForm.get('cardNumber')?.touched || submitted)">

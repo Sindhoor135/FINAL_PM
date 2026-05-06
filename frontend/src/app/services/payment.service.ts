@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 })
 export class PaymentService {
   private apiUrl = 'http://localhost:8080/api/payment/pay';
+  private statusUrl = 'http://localhost:8080/api/payment/status';
 
   constructor(
     private http: HttpClient,
@@ -37,6 +38,26 @@ export class PaymentService {
     return this.http.post<PaymentResponse>(
       `${this.apiUrl}/${paymentId}`,
       paymentData,
+      { headers }
+    );
+  }
+
+  /**
+   * Get payment status for a parcel
+   * @param parcelId - The parcel ID
+   * @returns Observable of the payment status response
+   */
+  getPaymentStatus(parcelId: number): Observable<any> {
+    const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
+    const token = this.authService.getAuthToken() || authResponse.token || '';
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get<any>(
+      `${this.statusUrl}/${parcelId}`,
       { headers }
     );
   }

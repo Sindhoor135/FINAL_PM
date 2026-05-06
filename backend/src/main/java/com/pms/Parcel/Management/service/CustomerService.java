@@ -1,7 +1,7 @@
 package com.pms.Parcel.Management.service;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMapinkedHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.List;
@@ -42,6 +42,7 @@ public class CustomerService {
 			parcel.setSenderName( user.getFullName()); 
 		parcel.setTrackingNumber("TRK" + System.currentTimeMillis());
 		parcel.setStatus(Parcel.Status.PENDING);
+		parcel.setPaymentDue(parcel.getCost());  // Set initial payment due to full cost
 		parcel.setCreatedAt(LocalDateTime.now());
 
 		System.out.println("my parcel: " + parcel);
@@ -51,7 +52,7 @@ public class CustomerService {
 		ParcelStatusHistory history = new ParcelStatusHistory();
 		history.setParcel(parcel);
 		history.setStatus(parcel.getStatus());
-		history.setNotes("remarks");
+		history.setNotes("Parcel created - Awaiting payment");
 		history.setUpdatedAt(LocalDateTime.now());
 
 		historyRepo.save(history);

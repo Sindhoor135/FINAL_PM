@@ -27,6 +27,7 @@ public class Parcel {
 	private String deliveryType;
 	private String packingType;
 	private Double cost;
+	private Double paymentDue;  // Tracks payment due amount
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -197,6 +198,14 @@ public class Parcel {
 
 	public void setDropTime(String dropTime) {
 		this.dropTime = dropTime;
+	}
+
+	public Double getPaymentDue() {
+		return paymentDue;
+	}
+
+	public void setPaymentDue(Double paymentDue) {
+		this.paymentDue = paymentDue;
 	}
 
 

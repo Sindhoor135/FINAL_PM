@@ -1,19 +1,13 @@
 package com.pms.Parcel.Management.controller;
 
-import javaautiliMap
+import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.CrossOriginutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import comspmsgParcel.Management.entity.Parcelmework.web.bind.annotation.RequestMapping;
-import com.pms.Parcel.Management.service.AdminService;
-import com.pms.Parcel.Management.service.CustomerService;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pms.Parcel.Management.entity.Parcel;

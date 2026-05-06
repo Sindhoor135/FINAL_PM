@@ -22,6 +22,7 @@ export interface Parcel {
   deliveryType: string;
   packingType: string;
   cost: number;
+  paymentDue?: number;  // Amount still due for payment
   pickupTime: string;
   dropTime: string;
   status?: string;

@@ -55,6 +55,27 @@ body {
     color: #9ca3af;
 }
 
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #1e3a5f;
+}
+
 .error-message,
 .error-alert{
     color: red;

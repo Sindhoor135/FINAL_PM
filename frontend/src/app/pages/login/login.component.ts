@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     isLoading = false;
     errorMessage = '';
+    showPassword = false;
 
     ngOnInit() {
       this.initializeForm();
@@ -42,6 +43,10 @@ export class LoginComponent implements OnInit {
 
     get userType() {
       return this.loginForm.get('userType')?.value || 'officer';
+    }
+
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     }
 
     handleLogin() {

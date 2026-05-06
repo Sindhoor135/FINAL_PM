@@ -17,6 +17,7 @@ public class Payment {
     private Double amount;
     private String paymentMethod; // CARD / UPI
     private Boolean success;
+    private String status; // PENDING, COMPLETED, FAILED
 
     private LocalDateTime paidAt;
 
@@ -35,6 +36,9 @@ public class Payment {
 
     public Boolean isSuccess() { return success; }
     public void setSuccess(Boolean success) { this.success = success; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public LocalDateTime getPaidAt() { return paidAt; }
     public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
